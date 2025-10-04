@@ -1,14 +1,10 @@
 package com.unais.lms.controller;
 
-import com.unais.lms.model.Enrollment;
+import com.unais.lms.dto.EnrollmentRequest;
+import com.unais.lms.dto.EnrollmentResponse;
 import com.unais.lms.service.EnrollmentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,28 +12,38 @@ import java.util.List;
 @RequestMapping("/api/enrollments")
 public class EnrollmentController {
 
-    @Autowired
-    private EnrollmentService enrollmentService;
+
+    private final EnrollmentService enrollmentService;
+
+    public EnrollmentController(EnrollmentService enrollmentService) {
+        this.enrollmentService = enrollmentService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<Enrollment>> getAllEnrollments(){
-        try{
-            List<Enrollment> enrollments=enrollmentService.getAllEnrollments();
-            return new ResponseEntity<>(enrollments, HttpStatus.OK);
-        }catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<EnrollmentResponse>> getAllEnrollments(){
+        return ResponseEntity.ok(enrollmentService.getAllEnrollments());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Enrollment> getEnrollmentById(@PathVariable Long id) {
-        try {
-            Enrollment enrollment = enrollmentService.getEnrollmentById(id);
-            return ResponseEntity.ok().body(enrollment);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-
-
+    public ResponseEntity<EnrollmentResponse> getEnrollmentById(@PathVariable Long id) {
+        return ResponseEntity.ok(enrollmentService.getEnrollmentById(id));
     }
+    @PostMapping
+    public ResponseEntity<EnrollmentResponse> createEnrollment(@RequestBody EnrollmentRequest enrollmentRequest){
+        return ResponseEntity.ok(enrollmentService.createEnrollment(enrollmentRequest));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EnrollmentResponse> updateEnrollment(@PathVariable Long id, @RequestBody EnrollmentRequest enrollmentRequest){
+        return ResponseEntity.ok(enrollmentService.updateEnrollment(id, enrollmentRequest));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEnrollment(@PathVariable Long id) {
+        enrollmentService.deleteEnrollment(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 }

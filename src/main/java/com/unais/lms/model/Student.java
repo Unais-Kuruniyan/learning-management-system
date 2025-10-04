@@ -21,9 +21,10 @@ public class Student {
     private String name;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "student")
     private List<Enrollment> enrollments;
 }

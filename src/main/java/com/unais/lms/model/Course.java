@@ -24,7 +24,7 @@ public class Course {
     @Column(nullable = true)
     private String courseDescription;
 
-    @OneToMany
+    @OneToMany(mappedBy = "course")
     private List<Enrollment> enrollments;
 
 
