@@ -2,6 +2,7 @@ package com.unais.lms.service;
 
 import com.unais.lms.dto.StudentRequest;
 import com.unais.lms.dto.StudentResponse;
+import com.unais.lms.dto.StudentSummary;
 import com.unais.lms.exception.ResourceNotFoundException;
 import com.unais.lms.mappers.StudentMapper;
 import com.unais.lms.model.Student;
@@ -35,10 +36,11 @@ public class StudentService {
         return studentMapper.mapToStudentResponse(student);
     }
 
-    public StudentResponse createStudent(StudentRequest studentRequest) {
+    public StudentSummary createStudent(StudentRequest studentRequest) {
         Student savedStudent= studentRepository.save(studentMapper.mapToStudent(studentRequest));
-        return studentMapper.mapToStudentResponse(savedStudent);
+        return studentMapper.mapToStudentSummary(savedStudent);
     }
+
 
 
     public StudentResponse updateStudent(Long id, StudentRequest studentRequest) {

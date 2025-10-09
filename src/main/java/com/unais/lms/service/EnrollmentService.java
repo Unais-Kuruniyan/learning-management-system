@@ -6,6 +6,7 @@ import com.unais.lms.exception.ResourceNotFoundException;
 import com.unais.lms.mappers.CourseMapper;
 import com.unais.lms.mappers.EnrollmentMapper;
 import com.unais.lms.model.Enrollment;
+import com.unais.lms.repo.CourseRepository;
 import com.unais.lms.repo.EnrollmentRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,13 @@ public class EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
     private final EnrollmentMapper enrollmentMapper;
     private final CourseMapper courseMapper;
+    private final CourseRepository courseRepository;
 
-    public EnrollmentService(EnrollmentRepository enrollmentRepository, EnrollmentMapper enrollmentMapper, CourseMapper courseMapper) {
+    public EnrollmentService(EnrollmentRepository enrollmentRepository, EnrollmentMapper enrollmentMapper, CourseMapper courseMapper, CourseRepository courseRepository) {
         this.enrollmentRepository = enrollmentRepository;
         this.enrollmentMapper = enrollmentMapper;
         this.courseMapper = courseMapper;
+        this.courseRepository = courseRepository;
     }
 
     public List<EnrollmentResponse> getAllEnrollments() {
@@ -47,7 +50,7 @@ public class EnrollmentService {
         Enrollment enrollment=enrollmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Enrollment not found"));
         enrollment.setEnrollmentDate(LocalDateTime.now());
         enrollment.setStudent(enrollment.getStudent());
-        enrollment.setCourse(enrollmentRequest.course());
+        enrollment.setCourse(courseRepository.findById(enrollmentRequest.courseId()).get());
         enrollmentRepository.save(enrollment);
         return enrollmentMapper.mapToEnrollmentResponse(enrollment);
 
