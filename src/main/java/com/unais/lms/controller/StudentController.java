@@ -2,6 +2,7 @@ package com.unais.lms.controller;
 
 import com.unais.lms.dto.StudentRequest;
 import com.unais.lms.dto.StudentResponse;
+import com.unais.lms.dto.StudentSummary;
 import com.unais.lms.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +32,11 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentResponse> createStudent(@RequestBody StudentRequest student) {
-        StudentResponse savedStudent = studentService.createStudent(student);
+    public ResponseEntity<StudentSummary> createStudent(@RequestBody StudentRequest student) {
+        StudentSummary savedStudent = studentService.createStudent(student);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedStudent);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<StudentResponse> updateStudent(@PathVariable Long id, @RequestBody StudentRequest student) {

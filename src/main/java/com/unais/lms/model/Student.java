@@ -1,17 +1,16 @@
 package com.unais.lms.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 public class Student {
     @Id
@@ -24,7 +23,6 @@ public class Student {
     @JoinColumn(name = "user_id")
     private User user;
 
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "student")
-    private List<Enrollment> enrollments;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
+    private List<Enrollment> enrollments = new ArrayList<>();
 }

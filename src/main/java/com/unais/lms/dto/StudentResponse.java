@@ -6,6 +6,7 @@ public record StudentResponse(
         Long studentId,
         String name,
         UserResponse userResponse,
-        List<EnrollmentResponse> enrollmentResponses
+//        List<EnrollmentResponse> enrollmentResponses
+        List<Long> enrollmentIds
 ) {
 }
